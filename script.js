@@ -37,10 +37,11 @@ let customer_context_id;
 let tokenize_response;
 let tokenize_id;
 let order_id;
-let server_endpoint = "/.netlify/functions/api/"; // Replace with your own server endpoint
+let server_endpoint = "http://localhost:3004"; // Replace with your own server endpoint Original value: /.netlify/functions/api/
 let single_use_token;
 let fastlane_options_object;
 let payment_source;
+import { v4 as uuidv4 } from 'uuid'; //add uuidv3 function to generate unique data-client-metadata-id to pass in
 
 // Entry point
 get_auth()
@@ -64,12 +65,18 @@ function get_auth() {
 // Initializes the PayPal script tag with the provided access token.
 function init_paypal_script_tag(data) {
     access_token = data.access_token;
-    client_id = "REPLACE_ME";
+    client_id = "AZmHKp_3DOsYNwMifWL2mDO4hYfAHXhwtzs6qxy-qUSaKE_oIIL6X4XP92NXvoorGrolPXD3PiUEcDVF";
+
+    // Generate a unique data-client-metadata-id
+    const dataClientMetadataId = uuidv4();
+    console.log("Generated data-client-metadata-id:", dataClientMetadataId);
+
     // Setting script tag attributes
     script_tag = document.createElement("script");
     script_tag.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&components=buttons,fastlane&enable-funding=venmo&disable-funding=card,paylater`;
     script_tag.setAttribute("data-user-id-token", access_token);
-    script_tag.setAttribute("data-client-metadata-id", "testing-sb-fastlane");
+    script_tag.setAttribute("data-client-metadata-id", dataClientMetadataId);
+    script_tag.setAttribute("testing-sb-fastlane");
     document.head.appendChild(script_tag);
     script_tag.onload = init_paypal_payment_options;
 }
