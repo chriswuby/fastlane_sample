@@ -5,7 +5,7 @@ let PAYPAL_CLIENT = process.env.PAYPAL_CLIENT;
 let PAYPAL_SECRET = process.env.PAYPAL_SECRET;
 let FASTLANE_APPROVED_DOMAINS_CSV = process.env.FASTLANE_APPROVED_DOMAINS_CSV;
 let PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com";
-//let PAYPAL_API_BASE_URL = "https://api-m.paypal.com";
+//let PAYPAL_API_BASE_URL = "https://api-m.paypal.com"; Production url
 
 // Routes
 exports.handler = async (event) => {
