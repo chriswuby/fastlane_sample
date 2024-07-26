@@ -41,7 +41,7 @@ let server_endpoint = "http://localhost:3004"; // Replace with your own server e
 let single_use_token;
 let fastlane_options_object;
 let payment_source;
-import { v4 as uuidv4 } from 'uuid'; //add uuidv3 function to generate unique data-client-metadata-id to pass in
+const { v4: uuidv4 } = require('uuid'); //add uuidv3 function to generate unique data-client-metadata-id to pass in
 
 // Entry point
 get_auth()
