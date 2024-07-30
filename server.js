@@ -1,5 +1,5 @@
-import express from 'express';
-import apiRoutes from './api.js'; // Import the api.js file
+const express = require ('express');
+const apiRoutes = require('./api.js'); // Require the api.js file
 
 const app = express();
 const PORT = process.env.PORT || 3004;

@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import 'dotenv/config';
+const fetch = require("node-fetch");
+require('dotenv').config();
 
 let PAYPAL_CLIENT = process.env.PAYPAL_CLIENT;
 let PAYPAL_SECRET = process.env.PAYPAL_SECRET;
@@ -8,7 +8,7 @@ let PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com";
 //let PAYPAL_API_BASE_URL = "https://api-m.paypal.com"; Production url
 
 // Routes
-export const handler = async (event) => {
+const handler = async (event) => {
     let request_body = JSON.parse(event.body);
     console.log("Received request:", request_body);
 
@@ -31,6 +31,8 @@ export const handler = async (event) => {
             };
     }
 };
+
+export default handler;
 
 // Handle Authentication
 let handle_auth = async () => {
