@@ -8,7 +8,7 @@ let PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com";
 //let PAYPAL_API_BASE_URL = "https://api-m.paypal.com"; Production url
 
 // Routes
-exports.handler = async (event) => {
+export const handler = async (event) => {
     let request_body = JSON.parse(event.body);
     console.log("Received request:", request_body);
 
