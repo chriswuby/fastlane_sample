@@ -32,7 +32,7 @@ const handler = async (event) => {
     }
 };
 
-export default handler;
+module.exports = handler;
 
 // Handle Authentication
 let handle_auth = async () => {
