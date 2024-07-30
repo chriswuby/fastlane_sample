@@ -11,9 +11,9 @@ let PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com";
 //let PAYPAL_API_BASE_URL = "https://api-m.paypal.com"; Production url
 
 // Generate UUID v4 token
-router.get('/generate-uuid', (req, res) => {
-  const uuid = uuidv4();
-  res.json({ uuid });
+router.get('/generate-data-client-metadata-id', (req, res) => {
+  const dataClientMetadataId = uuidv4();
+  res.json({ dataClientMetadataId });
 });
 
 module.exports = router;

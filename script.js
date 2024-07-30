@@ -42,13 +42,6 @@ let single_use_token;
 let fastlane_options_object;
 let payment_source;
 
-// Entry point
-get_auth()
-    .then(response => response.json())
-    .then(init_paypal_script_tag)
-    .catch(error => {
-        console.error("Error:", error);
-    });
 // Fetch an authentication token from the server to load fastlane SDK (card payments)
 function get_auth() {
     return fetch(server_endpoint, {
@@ -61,14 +54,28 @@ function get_auth() {
         })
     });
 }
+
+// Fetch a unique data-client-metadata-id from the server
+function get_data_client_metadata_id() {
+    return fetch('/api/generate-data-client-metadata-id')
+      .then(response => response.json())
+      .then(data => data.dataClientMetadataId);
+  }
+
 // Initializes the PayPal script tag with the provided access token.
 function init_paypal_script_tag(data) {
     access_token = data.access_token;
     client_id = "AZmHKp_3DOsYNwMifWL2mDO4hYfAHXhwtzs6qxy-qUSaKE_oIIL6X4XP92NXvoorGrolPXD3PiUEcDVF";
-
-    // Generate a unique data-client-metadata-id
-    const dataClientMetadataId = uuidv4();
-    console.log("Generated data-client-metadata-id:", dataClientMetadataId);
+    
+    // Fetch a unique data-client-metadata-id from the server
+    get_data_client_metadata_id()
+     .then(dataClientMetadataId => {
+        console.log("Generated data-client-metadata-id:", dataClientMetadataId);
+        // Use the dataClientMetadataId as needed
+        })
+        .catch(error => {
+            console.error("Error fetching data-client-metadata-id:", error);
+        });
 
     // Setting script tag attributes
     script_tag = document.createElement("script");
@@ -79,6 +86,7 @@ function init_paypal_script_tag(data) {
     document.head.appendChild(script_tag);
     script_tag.onload = init_paypal_payment_options;
 }
+
 // Initializes PayPal payment options by setting up Fastlane and PayPal buttons.
 function init_paypal_payment_options() {
     init_fastlane_methods();
@@ -429,6 +437,15 @@ function ui_handle_show_card_fields() {
 function check_email_validity(email) {
     return email_regex.test(email);
 }
+
+// Entry point
+get_auth()
+    .then(response => response.json())
+    .then(init_paypal_script_tag)
+    .catch(error => {
+        console.error("Error:", error);
+    });
+
 // Remove default form submission behavior
 payment_form.addEventListener("submit", (event) => {
     event.preventDefault();
