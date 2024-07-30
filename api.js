@@ -1,11 +1,22 @@
 const fetch = require("node-fetch");
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
+const express = require('express');
+const router = express.Router();
 
 let PAYPAL_CLIENT = process.env.PAYPAL_CLIENT;
 let PAYPAL_SECRET = process.env.PAYPAL_SECRET;
 let FASTLANE_APPROVED_DOMAINS_CSV = process.env.FASTLANE_APPROVED_DOMAINS_CSV;
 let PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com";
 //let PAYPAL_API_BASE_URL = "https://api-m.paypal.com"; Production url
+
+// Generate UUID v4 token
+router.get('/generate-uuid', (req, res) => {
+  const uuid = uuidv4();
+  res.json({ uuid });
+});
+
+module.exports = router;
 
 // Routes
 const handler = async (event) => {
