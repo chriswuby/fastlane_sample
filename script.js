@@ -71,20 +71,19 @@ function init_paypal_script_tag(data) {
     get_data_client_metadata_id()
      .then(dataClientMetadataId => {
         console.log("Generated data-client-metadata-id:", dataClientMetadataId);
-        // Use the dataClientMetadataId as needed
-        })
+
+         // Setting script tag attributes
+         script_tag = document.createElement("script");
+         script_tag.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&components=buttons,fastlane&enable-funding=venmo&disable-funding=card,paylater`;
+         script_tag.setAttribute("data-user-id-token", access_token);
+         script_tag.setAttribute("data-client-metadata-id", dataClientMetadataId);
+         script_tag.setAttribute("testing-sb-fastlane");
+         document.head.appendChild(script_tag);
+         script_tag.onload = init_paypal_payment_options;
+     })
         .catch(error => {
             console.error("Error fetching data-client-metadata-id:", error);
         });
-
-    // Setting script tag attributes
-    script_tag = document.createElement("script");
-    script_tag.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&components=buttons,fastlane&enable-funding=venmo&disable-funding=card,paylater`;
-    script_tag.setAttribute("data-user-id-token", access_token);
-    script_tag.setAttribute("data-client-metadata-id", dataClientMetadataId);
-    script_tag.setAttribute("testing-sb-fastlane");
-    document.head.appendChild(script_tag);
-    script_tag.onload = init_paypal_payment_options;
 }
 
 // Initializes PayPal payment options by setting up Fastlane and PayPal buttons.

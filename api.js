@@ -20,26 +20,50 @@ module.exports = router;
 
 // Routes
 const handler = async (event) => {
-    let request_body = JSON.parse(event.body);
-    console.log("Received request:", request_body);
-
-    switch (request_body.method) {
-        case "fastlane_auth":
-            return handle_fastlane_auth();
-        case "auth":
-            return handle_auth();
-        case "card_order":
-            return handle_card_order(request_body);
-        case "create_order":
-            return handle_create_order(request_body);
-        case "complete_order":
-            return handle_complete_order(request_body);
-        default:
-            console.error("Invalid method:", request_body.method);
+    let request_body;
+    //check if event.body is defined and is a valid string
+    if (event.body && typeof event.body === 'string') {
+        try {
+            request_body = JSON.parse(event.body);
+        } catch (error) {
+            console.error("Invalid Json. Error parsing request body:", error);
             return {
                 statusCode: 400,
-                body: "Invalid endpoint"
+                body: "Invalid Json request body"
             };
+        } 
+    } else {
+        request_body = {};
+    }
+
+    console.log("Received request:", request_body);
+
+    //check if requst_body.method is defined and is a string
+    if (request_body.method && typeof request_body.method == 'string') {
+        switch (request_body.method) {
+            case "fastlane_auth":
+               return handle_fastlane_auth();
+            case "auth":
+                return handle_auth();
+            case "card_order":
+                return handle_card_order(request_body);
+            case "create_order":
+                return handle_create_order(request_body);
+            case "complete_order":
+                return handle_complete_order(request_body);
+            default:
+                console.error("Invalid method - api line55:", request_body.method);
+                return {
+                    statusCode: 400,
+                    body: "Invalid endpoint"
+                };
+        }
+    } else {
+        console.error("Invalid request body: method is missing or not a string");
+        return {
+            statusCode: 400,
+            body: "Invalid request body"
+        };
     }
 };
 
